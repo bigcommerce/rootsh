@@ -575,6 +575,11 @@ void logSession(const int childPid) {
           dologging(msgbuf, msglen);
           exit(EXIT_FAILURE);
         }
+#ifndef LOGOUTPUT
+        // User keystrokes are collected here should output logging be disabled
+        // note: this is pre echo to a terminal
+        dologging(buf, n);
+#endif
         if (write(masterPty, buf, n) != n) {
           char msgbuf[BUFSIZ];
           int msglen;
@@ -592,7 +597,9 @@ void logSession(const int childPid) {
       */
       if (FD_ISSET(masterPty, &readmask)) {
         if ((n = read(masterPty, buf, sizeof(buf))) > 0) {
+#ifdef LOGOUTPUT
           dologging(buf, n);
+#endif
           if(write(STDOUT_FILENO, buf, n) < 0) {
             char msgbuf[BUFSIZ];
             int msglen;

@@ -14,6 +14,19 @@ dnl -- AM_INIT_AUTOMAKE([foreign])
 AM_INIT_AUTOMAKE()
 AC_CANONICAL_HOST
 
+logoutput=
+AC_MSG_CHECKING(for output logging)
+AC_ARG_ENABLE(output-logging,
+[  --enable-output-logging     enable output logging],
+[
+  logoutput=$enableval
+])
+if test "x$logoutput" = "xno" ; then
+  AC_MSG_RESULT(no)
+dnl --  AC_DEFINE(LOGOUTPUT, 0,[no logging of output])
+fi
+AM_CONDITIONAL(LOGOUTPUT, test "x$logoutput" != "xno")
+
 syslog=
 AC_MSG_CHECKING(for syslog)
 AC_ARG_ENABLE(syslog,
@@ -274,11 +287,11 @@ AC_CHECK_FUNCS(clearenv,
   AC_DEFINE(HAVE_CLEARENV, 1, [clearenv found]),)
 
 
-AC_CHECK_FUNCS(sigset, 
+AC_CHECK_FUNCS(sigset,
   AC_DEFINE(HAVE_SIGSET, 1, [sigset found]),
   AC_DEFINE(HAVE_SIGSET, 0, [sigset not found]))
 
-AC_CHECK_FUNCS(sigaction, 
+AC_CHECK_FUNCS(sigaction,
   AC_DEFINE(HAVE_SIGACTION, 1, [sigaction found]),
   AC_DEFINE(HAVE_SIGACTION, 0, [sigaction not found]))
 
@@ -417,7 +430,7 @@ dnl --- freebsd is missing IUCLC for c_iflag &= ~(INLCR|IGNCR|ICRNL|IUCLC|IXON);
 dnl --- macos is missing O_SYNC for open(file, O_RDWR|O_CREAT|O_EXCL|O_SYNC,
 dnl --- we define them as 0, so we can still use them in the code
 AC_MSG_CHECKING(operating system)
-case "$host_os" in 
+case "$host_os" in
   *solaris*)
     AC_MSG_RESULT(solaris)
     AC_DEFINE(SOLARIS_COMPAT,,descr)
