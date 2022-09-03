@@ -404,7 +404,13 @@ int main(int argc, char **argv) {
     exit(EXIT_FAILURE);
   }
 
-  if (! setupusermode()) {
+#ifdef SUDOUSER
+  if (!standalone) {
+    userName = getenv("SUDO_USER");
+  }
+#endif
+
+        if (!setupusermode()) {
     exit(EXIT_FAILURE);
   }
 

@@ -27,6 +27,22 @@ dnl --  AC_DEFINE(LOGOUTPUT, 0,[no logging of output])
 fi
 AM_CONDITIONAL(LOGOUTPUT, test "x$logoutput" != "xno")
 
+sudouser=
+AC_MSG_CHECKING(if SUDO_USER should determine username)
+AC_ARG_ENABLE(sudo-username,
+[  --enable-sudo-username     enable use of SUDO_USER for logging],
+[
+  sudouser=$enableval
+])
+if test "x$sudouser" = "xno" ; then
+  AC_MSG_RESULT(no)
+dnl --  AC_DEFINE(SUDOUSER, 0,[use username of process owner])
+else
+  AC_MSG_RESULT(enabled)
+  AC_DEFINE(SUDOUSER, 1,[use SUDO_USER])
+fi
+AM_CONDITIONAL(SUDOUSER, test "x$sudouser" != "xno")
+
 syslog=
 AC_MSG_CHECKING(for syslog)
 AC_ARG_ENABLE(syslog,
