@@ -312,13 +312,14 @@ int main(int argc, char **argv) {
   /* make sure logdir is empty */
   logdir[0] = '\0';
 
+#ifdef LOGTOFILE
   /* copy compiled value into logdir */
   if(strlen(LOGDIR) > MAXPATHLEN) {
     fprintf(stderr, "Compiled value for logdir: '%s' is longer than max path len: %d\n", LOGDIR, MAXPATHLEN);
     exit(EXIT_FAILURE);
   }
   strcpy(logdir, LOGDIR);
-
+#endif
 
   /* setup default shell */
   if(strlen(DEFAULTSHELL) > MAXPATHLEN) {
