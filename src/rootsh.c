@@ -952,7 +952,7 @@ int beginlogging(const char *shellCommands) {
 
   if(NULL != shellCommands) {
     msglen = snprintf(msgbuf, (sizeof(msgbuf) - 1),
-                      "shell commands: %s\n", shellCommands);
+                      "shell commands: %s\r\n", shellCommands);
     dologging(msgbuf, msglen);
   }
 
